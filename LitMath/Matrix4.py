@@ -286,17 +286,14 @@ class Matrix4(object):
                        
     @staticmethod
     def axisAngle(axis, angle):
-        import Vector3
-        assert isinstance(axis, Vector3) and type(angle) in (int, long, float)
-        
-        return Matrix4.axisAngleInRadian(Util.degreeToRadian(angle))
+        return Matrix4.axisAngleInRadian(axis, Util.degreeToRadian(angle))
         
     @staticmethod
     def axisAngleInRadian(axis, angle):
         import Vector3
-        assert isinstance(axis, Vector3) and type(angle) in (int, long, float)
+        assert isinstance(axis, Vector3.Vector3) and type(angle) in (int, long, float)
         
-        n = axis.normalized()
+        n = axis.normalized
         x = n.x
         y = n.y
         z = n.z
