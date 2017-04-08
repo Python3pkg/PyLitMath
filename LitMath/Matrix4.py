@@ -12,51 +12,48 @@ class Matrix4(object):
                        m21=0.0, m22=1.0, m23=0.0, m24=0.0,
                        m31=0.0, m32=0.0, m33=1.0, m34=0.0,
                        m41=0.0, m42=0.0, m43=0.0, m44=1.0):
-        self.m11 = m11
-        self.m12 = m12
-        self.m13 = m13
-        self.m14 = m14
-        self.m21 = m21
-        self.m22 = m22
-        self.m23 = m23
-        self.m24 = m24
-        self.m31 = m31
-        self.m32 = m32
-        self.m33 = m33
-        self.m34 = m34
-        self.m41 = m41
-        self.m42 = m42
-        self.m43 = m43
-        self.m44 = m44
+        self.m11 = float(m11)
+        self.m12 = float(m12)
+        self.m13 = float(m13)
+        self.m14 = float(m14)
+        self.m21 = float(m21)
+        self.m22 = float(m22)
+        self.m23 = float(m23)
+        self.m24 = float(m24)
+        self.m31 = float(m31)
+        self.m32 = float(m32)
+        self.m33 = float(m33)
+        self.m34 = float(m34)
+        self.m41 = float(m41)
+        self.m42 = float(m42)
+        self.m43 = float(m43)
+        self.m44 = float(m44)
         
     def set(self, m11, m12, m13, m14,
                   m21, m22, m23, m24,
                   m31, m32, m33, m34,
                   m41, m42, m43, m44):
-        self.m11 = m11
-        self.m12 = m12
-        self.m13 = m13
-        self.m14 = m14
-        self.m21 = m21
-        self.m22 = m22
-        self.m23 = m23
-        self.m24 = m24
-        self.m31 = m31
-        self.m32 = m32
-        self.m33 = m33
-        self.m34 = m34
-        self.m41 = m41
-        self.m42 = m42
-        self.m43 = m43
-        self.m44 = m44
+        self.m11 = float(m11)
+        self.m12 = float(m12)
+        self.m13 = float(m13)
+        self.m14 = float(m14)
+        self.m21 = float(m21)
+        self.m22 = float(m22)
+        self.m23 = float(m23)
+        self.m24 = float(m24)
+        self.m31 = float(m31)
+        self.m32 = float(m32)
+        self.m33 = float(m33)
+        self.m34 = float(m34)
+        self.m41 = float(m41)
+        self.m42 = float(m42)
+        self.m43 = float(m43)
+        self.m44 = float(m44)
         return self
         
-    def __copy__(self):
-        return Matrix4(self.m11, self.m12, self.m13, self.m14,
-                       self.m21, self.m22, self.m23, self.m24,
-                       self.m31, self.m32, self.m33, self.m34,
-                       self.m41, self.m42, self.m43, self.m44)
-    copy = __copy__
+    def copy(self):
+        import copy
+        return copy.copy(self)
     
     def __repr__(self):
         return ('Matrix4(%8.2f %8.2f %8.2f %8.2f\n' \
@@ -67,6 +64,30 @@ class Matrix4(object):
                    self.m21, self.m22, self.m23, self.m24,
                    self.m31, self.m32, self.m33, self.m34,
                    self.m41, self.m42, self.m43, self.m44)
+                   
+    def __eq__(self, other):
+        if isinstance(other, Matrix4):
+            return Util.isEqual(self.m11, other.m11) and \
+                   Util.isEqual(self.m12, other.m12) and \
+                   Util.isEqual(self.m13, other.m13) and \
+                   Util.isEqual(self.m14, other.m14) and \
+                   Util.isEqual(self.m21, other.m21) and \
+                   Util.isEqual(self.m22, other.m22) and \
+                   Util.isEqual(self.m23, other.m23) and \
+                   Util.isEqual(self.m24, other.m24) and \
+                   Util.isEqual(self.m31, other.m31) and \
+                   Util.isEqual(self.m32, other.m32) and \
+                   Util.isEqual(self.m33, other.m33) and \
+                   Util.isEqual(self.m34, other.m34) and \
+                   Util.isEqual(self.m41, other.m41) and \
+                   Util.isEqual(self.m42, other.m42) and \
+                   Util.isEqual(self.m43, other.m43) and \
+                   Util.isEqual(self.m44, other.m44)
+        else:
+            return False
+            
+    def __ne__(self, other):
+        return not self.__eq__(other)
                    
     def __mul__(self, other):
         '''Multiplies two matrices.'''
@@ -94,7 +115,8 @@ class Matrix4(object):
         M.m44 = float(self.m41 * other.m14 + self.m42 * other.m24 + self.m43 * other.m34 + self.m44 * other.m44)
         
         return M
-               
+    
+    @property
     def determinant(self):
         '''The determinant of the matrix.'''
         A0 = self.m11 * self.m22 - self.m12 * self.m21
@@ -111,14 +133,15 @@ class Matrix4(object):
         B5 = self.m33 * self.m44 - self.m34 * self.m43
         
         return float(A0*B5 - A1*B4 + A2*B3 + A3*B2 - A4*B1 + A5*B0)
-        
+    
+    @property
     def inverse(self):
         '''The inverse of this matrix.'''
-        d = self.determinant()
+        d = self.determinant
         
         # determinant equals zero, means no inverse, return identity
         if d == 0:
-            return Matrix4.Identity()
+            return Matrix4.identity()
         
         M = Matrix4()
         M.m11 = (self.m23*self.m34*self.m42 - self.m24*self.m33*self.m42 + self.m24*self.m32*self.m43 - \
@@ -154,7 +177,8 @@ class Matrix4(object):
         M.m44 = (self.m12*self.m23*self.m31 - self.m13*self.m22*self.m31 + self.m13*self.m21*self.m32 - \
                 self.m11*self.m23*self.m32 - self.m12*self.m21*self.m33 + self.m11*self.m22*self.m33) / d
         return M
-        
+    
+    @property    
     def transpose(self):
         '''Returns the transpose of this matrix.'''
         return Matrix4(self.m11, self.m21, self.m31, self.m41,
@@ -191,7 +215,7 @@ class Matrix4(object):
                         0.0, 0.0, 0.0, 1.0)
     
     @staticmethod
-    def Identity():
+    def identity():
         '''Returns the identity matrix.'''
         return Matrix4(1.0, 0.0, 0.0, 0.0,
                        0.0, 1.0, 0.0, 0.0,
@@ -199,7 +223,7 @@ class Matrix4(object):
                        0.0, 0.0, 0.0, 1.0)
                
     @staticmethod
-    def Zero():
+    def zero():
         '''Returns a matrix with all elements set to zero.'''
         return Matrix4(0.0, 0.0, 0.0, 0.0,
                        0.0, 0.0, 0.0, 0.0,
@@ -207,7 +231,7 @@ class Matrix4(object):
                        0.0, 0.0, 0.0, 0.0)
                        
     @staticmethod
-    def Translate(tx, ty, tz):
+    def translate(tx, ty, tz):
         '''Creates a translation matrix.'''
         return Matrix4(1.0, 0.0, 0.0, tx,
                        0.0, 1.0, 0.0, ty,
@@ -215,11 +239,11 @@ class Matrix4(object):
                        0.0, 0.0, 0.0, 1.0)
                        
     @staticmethod
-    def RotateX(x):
-        return Matrix4.RotateXInRadian(Util.degreeToRadian(x))
+    def rotateX(x):
+        return Matrix4.rotateXInRadian(Util.degreeToRadian(x))
         
     @staticmethod
-    def RotateXInRadian(x):
+    def rotateXInRadian(x):
         cos = math.cos(x)
         sin = math.sin(x)
         return Matrix4(1.0, 0.0,  0.0, 0.0,
@@ -228,11 +252,11 @@ class Matrix4(object):
                        0.0, 0.0,  0.0, 1.0)
         
     @staticmethod
-    def RotateY(y):
-        return Matrix4.RotateYInRadian(Util.degreeToRadian(y))
+    def rotateY(y):
+        return Matrix4.rotateYInRadian(Util.degreeToRadian(y))
         
     @staticmethod
-    def RotateYInRadian(y):
+    def rotateYInRadian(y):
         cos = math.cos(y)
         sin = math.sin(y)
         return Matrix4(cos, 0.0, sin, 0.0,
@@ -241,11 +265,11 @@ class Matrix4(object):
                        0.0, 0.0, 0.0, 1.0)
         
     @staticmethod
-    def RotateZ(z):
-        return Matrix4.RotateZInRadian(Util.degreeToRadian(z))
+    def rotateZ(z):
+        return Matrix4.rotateZInRadian(Util.degreeToRadian(z))
         
     @staticmethod
-    def RotateZInRadian(z):
+    def rotateZInRadian(z):
         cos = math.cos(z)
         sin = math.sin(z)
         return Matrix4(cos, -sin, 0.0, 0.0,
@@ -254,21 +278,21 @@ class Matrix4(object):
                        0.0,  0.0, 0.0, 1.0)
                        
     @staticmethod
-    def Scale(sx, sy, sz):
+    def scale(sx, sy, sz):
         return Matrix4( sx, 0.0, 0.0, 0.0,
                        0.0,  sy, 0.0, 0.0,
                        0.0, 0.0,  sz, 0.0,
                        0.0, 0.0, 0.0, 1.0)
                        
     @staticmethod
-    def AxisAngle(axis, angle):
+    def axisAngle(axis, angle):
         import Vector3
         assert isinstance(axis, Vector3) and type(angle) in (int, long, float)
         
-        return Matrix4.AxisAngleInRadian(Util.degreeToRadian(angle))
+        return Matrix4.axisAngleInRadian(Util.degreeToRadian(angle))
         
     @staticmethod
-    def AxisAngleInRadian(axis, angle):
+    def axisAngleInRadian(axis, angle):
         import Vector3
         assert isinstance(axis, Vector3) and type(angle) in (int, long, float)
         
@@ -293,7 +317,7 @@ class Matrix4(object):
         return M
         
     @staticmethod
-    def EulerXYZ(x, y, z):
+    def eulerXYZ(x, y, z):
         assert type(x) in (int, long, float) and \
                type(y) in (int, long, float) and \
                type(z) in (int, long, float)
@@ -328,7 +352,7 @@ class Matrix4(object):
         return M
         
     @staticmethod
-    def EulerZXY(x, y, z):
+    def eulerZXY(x, y, z):
         assert type(x) in (int, long, float) and \
                type(y) in (int, long, float) and \
                type(z) in (int, long, float)
