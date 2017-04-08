@@ -25,6 +25,18 @@ class Quaternion(object):
     def __repr__(self):
         return 'Quaternion( %.2f, %.2f, %.2f, %.2f )' % \
                (self.x, self.y, self.z, self.w)
+               
+    def __eq__(self, other):
+        if isinstance(other, Quaternion):
+            return Util.isEqual(self.x, other.x) and \
+                   Util.isEqual(self.y, other.y) and \
+                   Util.isEqual(self.z, other.z) and \
+                   Util.isEqual(self.w, other.w)
+        else:
+            return False
+            
+    def __ne__(self, other):
+        return not self.__eq__(other)
     
     @property    
     def magnitude(self):
