@@ -6,12 +6,12 @@ class Vector2(object):
     __hash__ = None
 
     def __init__(self, x=0.0, y=0.0):
-        self.x = x
-        self.y = y
+        self.x = float(x)
+        self.y = float(y)
         
     def set(self, x, y):
-        self.x = x
-        self.y = y
+        self.x = float(x)
+        self.y = float(y)
         return self
         
     def copy(self):
