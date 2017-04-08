@@ -95,7 +95,7 @@ class Matrix3(object):
         
         # determinant equals zero, means no inverse, return identity
         if d == 0:
-            return Matrix3.Identity()
+            return Matrix3.identity()
         
         tmp = Matrix3()
         tmp.m11 = (self.m22 * self.m33 - self.m23 * self.m32) / d
@@ -142,33 +142,33 @@ class Matrix3(object):
                         0.0, 0.0, 1.0)
     
     @staticmethod
-    def Identity():
+    def identity():
         '''Returns the identity matrix.'''
         return Matrix3(1.0, 0.0, 0.0,
                        0.0, 1.0, 0.0,
                        0.0, 0.0, 1.0)
                        
     @staticmethod
-    def Zero():
+    def zero():
         '''Returns a matrix with all elements set to zero.'''
         return Matrix3(0.0, 0.0, 0.0,
                        0.0, 0.0, 0.0,
                        0.0, 0.0, 0.0)
                        
     @staticmethod
-    def Translate(x, y):
+    def translate(x, y):
         '''Creates a translation matrix.'''
         return Matrix3(1.0, 0.0, x,
                        0.0, 1.0, y,
                        0.0, 0.0, 1.0)
                        
     @staticmethod
-    def Rotate(angle):
+    def rotate(angle):
         '''Creates a rotation matrix, angle is in degree.'''
-        return Matrix3.RotateInRadian(Util.degreeToRadian(angle))
+        return Matrix3.rotateInRadian(Util.degreeToRadian(angle))
                        
     @staticmethod
-    def RotateInRadian(angle):
+    def rotateInRadian(angle):
         '''Creates a rotation matrix, angle is in radian.'''
         cos = math.cos(angle)
         sin = math.sin(angle)
@@ -177,7 +177,7 @@ class Matrix3(object):
                        0.0,  0.0, 1.0)
         
     @staticmethod
-    def Scale(sx, sy):
+    def scale(sx, sy):
         '''Creates a scale matrix.'''
         return Matrix3(sx,  0.0, 0.0,
                        0.0, sy,  0.0,
