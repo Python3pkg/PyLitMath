@@ -75,19 +75,22 @@ class Vector2(object):
             return Vector2(self.x / d, self.y / d)
         else:
             return self.copy()
-            
-    def dot(self, other):
-        assert isinstance(other, Vector2)
-        return self.x * other.x + self.y * other.y
-        
-    def angle(self, other):
-        return Util.radianToDegree(self.angleInRadian(other))
     
-    def angleInRadian(self, other):
-        assert isinstance(other, Vector2)
-        m2 = self.length * other.length
+    @staticmethod
+    def dot(a, b):
+        assert isinstance(a, Vector2) and isinstance(b, Vector2)
+        return a.x * b.x + a.y * b.y
+    
+    @staticmethod    
+    def angle(a, b):
+        return Util.radianToDegree(Vector2.angleInRadian(a, b))
+    
+    @staticmethod
+    def angleInRadian(a, b):
+        assert isinstance(a, Vector2) and isinstance(b, Vector2)
+        m2 = a.length * b.length
         if m2 == 0:
             return 0.0
         else:
-            v = self.dot(other) / m2
+            v = Vector2.dot(a, b) / m2
             return math.acos( Util.clamp(v, -1.0, 1.0) )
