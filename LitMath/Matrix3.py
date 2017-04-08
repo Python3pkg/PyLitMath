@@ -10,35 +10,33 @@ class Matrix3(object):
     def __init__(self, m11=1.0, m12=0.0, m13=0.0,
                        m21=0.0, m22=1.0, m23=0.0,
                        m31=0.0, m32=0.0, m33=1.0):
-        self.m11 = m11
-        self.m12 = m12
-        self.m13 = m13
-        self.m21 = m21
-        self.m22 = m22
-        self.m23 = m23
-        self.m31 = m31
-        self.m32 = m32
-        self.m33 = m33
+        self.m11 = float(m11)
+        self.m12 = float(m12)
+        self.m13 = float(m13)
+        self.m21 = float(m21)
+        self.m22 = float(m22)
+        self.m23 = float(m23)
+        self.m31 = float(m31)
+        self.m32 = float(m32)
+        self.m33 = float(m33)
         
     def set(self, m11, m12, m13,
                   m21, m22, m23,
                   m31, m32, m33):
-        self.m11 = m11
-        self.m12 = m12
-        self.m13 = m13
-        self.m21 = m21
-        self.m22 = m22
-        self.m23 = m23
-        self.m31 = m31
-        self.m32 = m32
-        self.m33 = m33
+        self.m11 = float(m11)
+        self.m12 = float(m12)
+        self.m13 = float(m13)
+        self.m21 = float(m21)
+        self.m22 = float(m22)
+        self.m23 = float(m23)
+        self.m31 = float(m31)
+        self.m32 = float(m32)
+        self.m33 = float(m33)
         return self
-    
-    def __copy__(self):
-        return self.__class__(self.m11, self.m12, self.m13,
-                              self.m21, self.m22, self.m23,
-                              self.m31, self.m32, self.m33)
-    copy = __copy__
+        
+    def copy(self):
+        import copy
+        return copy.copy(self)
     
     def __repr__(self):
         return ('Matrix3(%8.2f %8.2f %8.2f\n' \
@@ -47,6 +45,23 @@ class Matrix3(object):
                 % (self.m11, self.m12, self.m13,
                    self.m21, self.m22, self.m23,
                    self.m31, self.m32, self.m33)
+                   
+    def __eq__(self, other):
+        if isinstance(other, Matrix3):
+            return Util.isEqual(self.m11, other.m11) and \
+                   Util.isEqual(self.m12, other.m12) and \
+                   Util.isEqual(self.m13, other.m13) and \
+                   Util.isEqual(self.m21, other.m21) and \
+                   Util.isEqual(self.m22, other.m22) and \
+                   Util.isEqual(self.m23, other.m23) and \
+                   Util.isEqual(self.m31, other.m31) and \
+                   Util.isEqual(self.m32, other.m32) and \
+                   Util.isEqual(self.m33, other.m33)
+        else:
+            return False
+            
+    def __ne__(self, other):
+        return not self.__eq__(other)
                             
     def __mul__(self, other):
         '''Multiplies two matrices.'''
@@ -62,7 +77,8 @@ class Matrix3(object):
         M.m32 = float(self.m31 * other.m12 + self.m32 * other.m22 + self.m33 * other.m32)
         M.m33 = float(self.m31 * other.m13 + self.m32 * other.m23 + self.m33 * other.m33)
         return M
-        
+    
+    @property    
     def determinant(self):
         '''The determinant of the matrix.'''
         return float(self.m11 * self.m22 * self.m33 + \
@@ -71,10 +87,11 @@ class Matrix3(object):
                      self.m11 * self.m23 * self.m32 - \
                      self.m12 * self.m21 * self.m33 - \
                      self.m13 * self.m22 * self.m31)
-               
+    
+    @property    
     def inverse(self):
         '''The inverse of this matrix.'''
-        d = self.determinant()
+        d = self.determinant
         
         # determinant equals zero, means no inverse, return identity
         if d == 0:
@@ -92,16 +109,12 @@ class Matrix3(object):
         tmp.m33 = (self.m11 * self.m22 - self.m12 * self.m21) / d
         return tmp
         
+    @property
     def transpose(self):
         '''Returns the transpose of this matrix.'''
         return Matrix3(self.m11, self.m21, self.m31,
                        self.m12, self.m22, self.m32,
                        self.m13, self.m23, self.m33)
-                       
-    def isZero(self):
-        return self.m11 == 0 and self.m12 == 0 and self.m13 == 0 and \
-               self.m21 == 0 and self.m22 == 0 and self.m23 == 0 and \
-               self.m31 == 0 and self.m32 == 0 and self.m33 == 0
         
     def multiplyPoint(self, pnt):
         '''Transforms a position by this matrix.'''
