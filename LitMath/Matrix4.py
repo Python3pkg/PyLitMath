@@ -1,5 +1,5 @@
 import math
-import Util
+from . import Util
 
 class Matrix4(object):
     __slots__ = ['m11', 'm12', 'm13', 'm14',
@@ -188,7 +188,7 @@ class Matrix4(object):
                        
     def multiplyPoint(self, pnt):
         '''Transforms a position by this matrix.'''
-        import Vector3
+        from . import Vector3
         assert isinstance(pnt, Vector3.Vector3)
         
         p = Vector3.Vector3()
@@ -199,7 +199,7 @@ class Matrix4(object):
         
     def multiplyVector(self, vec):
         '''Transforms a direction by this matrix.'''
-        import Vector3
+        from . import Vector3
         assert isinstance(vec, Vector3.Vector3)
         
         v = Vector3.Vector3()
@@ -290,8 +290,8 @@ class Matrix4(object):
         
     @staticmethod
     def axisAngleInRadian(axis, angle):
-        import Vector3
-        assert isinstance(axis, Vector3.Vector3) and type(angle) in (int, long, float)
+        from . import Vector3
+        assert isinstance(axis, Vector3.Vector3) and type(angle) in (int, int, float)
         
         n = axis.normalized
         x = n.x

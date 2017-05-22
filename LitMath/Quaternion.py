@@ -1,5 +1,5 @@
 import math
-import Util
+from . import Util
 
 class Quaternion(object):
     __slots__ = ['x', 'y', 'z', 'w']
@@ -83,7 +83,7 @@ class Quaternion(object):
             
     def multiplyPoint(self, pnt):
         '''Rotates the point pnt by this quaternion.'''
-        import Vector3
+        from . import Vector3
         assert isinstance(pnt, Vector3.Vector3)
         
         x = self.x
@@ -109,7 +109,7 @@ class Quaternion(object):
         z = self.z
         w = self.w
         
-        import Matrix4
+        from . import Matrix4
         matrix = Matrix4.Matrix4()
         matrix.m11 = 1.0-2.0*(y*y+z*z)
         matrix.m12 = 2.0*(x*y-z*w)
@@ -140,7 +140,7 @@ class Quaternion(object):
         
     def toAxisAngleInRadian(self):
         '''Converts a rotation to axis-angle representation(angle in radian).'''
-        import Vector3
+        from . import Vector3
         # reference:FreeCAD Rotation.cpp
         if self.w > -1.0 and self.w < 1.0:
             t = math.acos(self.w)
@@ -164,7 +164,7 @@ class Quaternion(object):
         
     @staticmethod
     def matrix4(matrix):
-        import Matrix4
+        from . import Matrix4
         assert isinstance(matrix, Matrix4.Matrix4)
 
         quat = Quaternion()
@@ -206,9 +206,9 @@ class Quaternion(object):
     @staticmethod
     def axisAngleInRadian(axis, angle):
         '''Creates a rotation which rotates angle degrees around axis.'''
-        import Vector3
+        from . import Vector3
         assert isinstance(axis, Vector3.Vector3) and \
-               type(angle) in (int, long, float)
+               type(angle) in (int, int, float)
         
         axis = axis.normalized
         scale = math.sin(angle / 2)
@@ -224,7 +224,7 @@ class Quaternion(object):
     @staticmethod
     def fromToRotation(f, to):
         '''Creates a rotation which rotates from from(Vector) to to(Vector).'''
-        from Vector3 import Vector3
+        from .Vector3 import Vector3
         assert isinstance(f, Vector3) and isinstance(to, Vector3)
         
         # reference:FreeCAD Rotation.cpp

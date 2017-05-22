@@ -1,5 +1,5 @@
 import math
-import Util
+from . import Util
 
 class Matrix3(object):
     __slots__ = ['m11', 'm12', 'm13',
@@ -118,7 +118,7 @@ class Matrix3(object):
         
     def multiplyPoint(self, pnt):
         '''Transforms a position by this matrix.'''
-        import Vector2
+        from . import Vector2
         assert isinstance(pnt, Vector2.Vector2)
         
         p = Vector2.Vector2()
@@ -128,7 +128,7 @@ class Matrix3(object):
         
     def multiplyVector(self, vec):
         '''Transforms a direction by this matrix.'''
-        import Vector2
+        from . import Vector2
         assert isinstance(vec, Vector2.Vector2)
         
         p = Vector2.Vector2()

@@ -1,5 +1,5 @@
 import math
-import Util
+from . import Util
 
 class Vector3(object):
     __slots__ = ['x', 'y', 'z']
@@ -47,12 +47,12 @@ class Vector3(object):
                        self.z - other.z)
                        
     def __mul__(self, other):
-        assert type(other) in (int, long, float)
+        assert type(other) in (int, int, float)
         return Vector3(self.x * other, self.y * other, self.z * other)
     __rmul__ = __mul__
             
     def __div__(self, other):
-        assert type(other) in (int, long, float)
+        assert type(other) in (int, int, float)
         return Vector3(self.x / other, self.y / other, self.z / other)
             
     def __neg__(self):
